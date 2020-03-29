@@ -72,20 +72,20 @@ Por padrão o MySQL irá iniciar o serviço no boot da máquina, consumindo recu
 
 ## Comandos básicos (dentro do prompt do MySQL)
 
-- **SHOW DATABASES;** (visualiza as databases disponíveis);
+- **SHOW DATABASES;**  (visualiza as databases disponíveis);
 
-- **USE** "database_name"; (utilizar a database selecionada);
+- **USE** "database_name";  (utilizar a database selecionada);
 
-- **SHOW TABLES;** (visualiza as tabelas da database utilizada);
+- **SHOW TABLES;**  (visualiza as tabelas da database utilizada);
 
-- **SHOW** "table_name"; (visualiza tabela selecionada);
+- **SHOW** "table_name";  (visualiza tabela selecionada);
 
-- **CREATE DATABASE** "database_name"**;** (cria database com nome designado);
+- **CREATE DATABASE** "database_name"**;**  (cria database com nome designado);
 
-- **CREATE TABLE** "table_name"**;** (cria tabela com nome designado);
+- **CREATE TABLE** "table_name"**;**  (cria tabela com nome designado);
 
 ### - Obtendo informação de uma tabela:
 
-**SELECT** "informacao_desejada"
-**FROM** "tabela_alvo"
-**WHERE** "condicoes_para_recuperacao"; (este parâmetro não é obrigatório)
+**SELECT** "informacao_desejada" <br>
+**FROM** "tabela_alvo" <br>
+**WHERE** "condicoes_para_recuperacao";  (este parâmetro não é obrigatório)
