@@ -48,15 +48,15 @@ Documentação: <https://dev.mysql.com/doc/refman/8.0/en/>
 
 ## Verificar status do serviço MySQL
 
-**sudo systemctl status mysql**
+***sudo systemctl status mysql***
 
 ## Iniciar serviço MySQL
 
-**systemctl start mysql**
+***systemctl start mysql***
 
 ## Parar serviço MySQL
 
-**systemctl stop mysql**
+***systemctl stop mysql***
 
 ## Configurando o sistema para não iniciar o MySQL no boot
 
@@ -84,7 +84,7 @@ Por padrão o MySQL irá iniciar o serviço no boot da máquina, consumindo recu
 
 - **CREATE TABLE** "table_name"**;**  (cria tabela com nome designado);
 
-### - Obtendo informação de uma tabela:
+### - Obtendo informação de uma tabela
 
 **SELECT** "informacao_desejada" <br>
 **FROM** "tabela_alvo" <br>
