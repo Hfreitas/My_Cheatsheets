@@ -11,8 +11,8 @@ Documentação: <https://dev.mysql.com/doc/refman/8.0/en/>
 3. Navegue, via terminal, até o diretório onde foi baixado o arquivo de instalação;
 
 4. Instale o pacote com o seguinte comando:
-   apt install ./mysql-apt-config\_{versão*que_você_baixou}.deb
-   ***exemplo: apt install ./mysql-apt-config_0.8.14-1_all.deb***;
+   apt install ./mysql-apt-config\_{versão\*que_você_baixou}.deb
+   **_exemplo: apt install ./mysql-apt-config_0.8.14-1_all.deb_**;
 
 5. Selecione a opção **MySQL Preview Packages** e escolha a opção **Enable**.
 
@@ -34,13 +34,13 @@ Documentação: <https://dev.mysql.com/doc/refman/8.0/en/>
 
 2. Rode os comandos :
 
-    **sudo apt-get remove --purge -s 'mysql'**
+   **sudo apt-get remove --purge -s 'mysql'**
 
-    **sudo rm -rf /etc/mysql /var/lib/mysql**
+   **sudo rm -rf /etc/mysql /var/lib/mysql**
 
-    **sudo apt-get autoremove**
+   **sudo apt-get autoremove**
 
-    **sudo apt-get autoclean**;
+   **sudo apt-get autoclean**;
 
 ## Acessar o MySQL do terminal
 
@@ -48,15 +48,15 @@ Documentação: <https://dev.mysql.com/doc/refman/8.0/en/>
 
 ## Verificar status do serviço MySQL
 
-***sudo systemctl status mysql***
+**_sudo systemctl status mysql_**
 
 ## Iniciar serviço MySQL
 
-***systemctl start mysql***
+**_systemctl start mysql_**
 
 ## Parar serviço MySQL
 
-***systemctl stop mysql***
+**_systemctl stop mysql_**
 
 ## Configurando o sistema para não iniciar o MySQL no boot
 
@@ -72,20 +72,24 @@ Por padrão o MySQL irá iniciar o serviço no boot da máquina, consumindo recu
 
 ## Comandos básicos (dentro do prompt do MySQL)
 
-- **SHOW DATABASES;**  (visualiza as databases disponíveis);
+- **SHOW DATABASES;** (visualiza as databases disponíveis);
 
-- **USE** "database_name";  (utilizar a database selecionada);
+- **USE** "database_name"; (utilizar a database selecionada);
 
-- **SHOW TABLES;**  (visualiza as tabelas da database utilizada);
+- **SHOW TABLES;** (visualiza as tabelas da database utilizada);
 
-- **SHOW** "table_name";  (visualiza tabela selecionada);
+- **SHOW** "table_name"; (visualiza tabela selecionada);
 
-- **CREATE DATABASE** "database_name"**;**  (cria database com nome designado);
+- **CREATE DATABASE** "database_name"**;** (cria database com nome designado);
 
-- **CREATE TABLE** "table_name"**;**  (cria tabela com nome designado);
+- **CREATE TABLE** "table_name"**;** (cria tabela com nome designado);
+
+- **DROP BATABASE** "database_name"**;** (exclui um banco de dados);
+
+- **DROP TABLE** "table_name"**;** (exclui uma tabela de dados);
 
 ### - Obtendo informação de uma tabela
 
 **SELECT** "informacao_desejada" <br>
 **FROM** "tabela_alvo" <br>
-**WHERE** "condicoes_para_recuperacao";  (este parâmetro não é obrigatório)
+**WHERE** "condicoes_para_recuperacao"; (este parâmetro não é obrigatório)
