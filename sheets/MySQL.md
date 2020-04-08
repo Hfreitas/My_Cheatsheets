@@ -1,18 +1,18 @@
 # MySQL
 
-Documentação: <https://dev.mysql.com/doc/refman/8.0/en/>
+[Documentação](https://dev.mysql.com/doc/refman/8.0/en/)
 
 ## Instalando o MySQL
 
-1. Baixe o arquivo de instalação neste link: <https://dev.mysql.com/downloads/repo/apt/>;
+1. Baixe o arquivo de instalação neste [link](https://dev.mysql.com/downloads/repo/apt/);
 
 2. Entre como usuário root (**comando sudo -i**);
 
 3. Navegue, via terminal, até o diretório onde foi baixado o arquivo de instalação;
 
 4. Instale o pacote com o seguinte comando:
-   apt install ./mysql-apt-config\_{versão\*que_você_baixou}.deb
-   **_exemplo: apt install ./mysql-apt-config_0.8.14-1_all.deb_**;
+   apt install ./mysql-apt-config\_{versão\*que*você_baixou}.deb
+   \*\*\_exemplo: apt install ./mysql-apt-config_0.8.14-1_all.deb*\*\*;
 
 5. Selecione a opção **MySQL Preview Packages** e escolha a opção **Enable**.
 
@@ -70,26 +70,219 @@ Por padrão o MySQL irá iniciar o serviço no boot da máquina, consumindo recu
    **sudo systemctl stop mysql.service
    sudo systemctl start mysql.service**
 
+### Usários e Privilégios
+
+```sql
+GRANT ALL PRIVILEGES ON base.* TO 'user'@'localhost' IDENTIFIED BY 'password';
+GRANT SELECT, INSERT, DELETE ON base.* TO 'user'@'localhost' IDENTIFIED BY 'password';
+REVOKE ALL PRIVILEGES ON base.* FROM 'user'@'host'; -- one permission only
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'user'@'host'; -- all permissions
+```
+
+```sql
+SET PASSWORD = PASSWORD('new_pass')
+SET PASSWORD FOR 'user'@'host' = PASSWORD('new_pass')
+SET PASSWORD = OLD_PASSWORD('new_pass')
+```
+
+```sql
+DROP USER 'user'@'host'
+```
+
+Host ‘%’ indicates any host.
+
+### Resetando a senha Root
+
+```bash
+/etc/init.d/mysql stop
+```
+
+```bash
+mysqld_safe --skip-grant-tables
+```
+
+```bash
+$ mysql # on another terminal
+mysql> UPDATE mysql.user SET password=PASSWORD('new_pass') WHERE user='root';
+```
+
+```bash
+## Switch back to the mysqld_safe terminal and kill the process using Control + \
+$ /etc/init.d/mysql start
+```
+
 ## Comandos básicos (dentro do prompt do MySQL)
 
-- **SHOW DATABASES;** (visualiza as databases disponíveis);
+### Create / Open / Delete Database
 
-- **USE** "database_name"; (utilizar a database selecionada);
+```sql
+CREATE DATABASE dbNameYouWant
+CREATE DATABASE dbNameYouWant CHARACTER SET utf8
+USE dbNameYouWant
+DROP DATABASE dbNameYouWant
+ALTER DATABASE dbNameYouWant CHARACTER SET utf8
+```
 
-- **SHOW TABLES;** (visualiza as tabelas da database utilizada);
+### Backup Database to SQL File
 
-- **SHOW** "table_name"; (visualiza tabela selecionada);
+```bash
+mysqldump -u Username -p dbNameYouWant > databasename_backup.sql
+```
 
-- **CREATE DATABASE** "database_name"**;** (cria database com nome designado);
+### Restore from backup SQL File
 
-- **CREATE TABLE** "table_name"**;** (cria tabela com nome designado);
+```bash
+mysql - u Username -p dbNameYouWant < databasename_backup.sql
+```
 
-- **DROP BATABASE** "database_name"**;** (exclui um banco de dados);
+### Repair Tables After Unclean Shutdown
 
-- **DROP TABLE** "table_name"**;** (exclui uma tabela de dados);
+```bash
+mysqlcheck --all-databases
+mysqlcheck --all-databases --fast
+```
 
-### - Obtendo informação de uma tabela
+### Browsing
 
-**SELECT** "informacao_desejada" <br>
-**FROM** "tabela_alvo" <br>
-**WHERE** "condicoes_para_recuperacao"; (este parâmetro não é obrigatório)
+```sql
+SHOW DATABASES
+SHOW TABLES
+SHOW FIELDS FROM table / DESCRIBE table
+SHOW CREATE TABLE table
+SHOW PROCESSLIST
+KILL process_number
+```
+
+### Select
+
+```sql
+SELECT * FROM table
+SELECT * FROM table1, table2, ...
+SELECT field1, field2, ... FROM table1, table2, ...
+SELECT ... FROM ... WHERE condition
+SELECT ... FROM ... WHERE condition GROUPBY field
+SELECT ... FROM ... WHERE condition GROUPBY field HAVING condition2
+SELECT ... FROM ... WHERE condition ORDER BY field1, field2
+SELECT ... FROM ... WHERE condition ORDER BY field1, field2 DESC
+SELECT ... FROM ... WHERE condition LIMIT 10
+SELECT DISTINCT field1 FROM ...
+SELECT DISTINCT field1, field2 FROM ...
+```
+
+### Select - Join
+
+```sql
+SELECT ... FROM t1 JOIN t2 ON t1.id1 = t2.id2 WHERE condition
+SELECT ... FROM t1 LEFT JOIN t2 ON t1.id1 = t2.id2 WHERE condition
+SELECT ... FROM t1 JOIN (t2 JOIN t3 ON ...) ON ...
+```
+
+### Conditions
+
+```sql
+field1 = value1
+field1 <> value1
+field1 LIKE 'value _ %'
+field1 IS NULL
+field1 IS NOT NULL
+field1 IS IN (value1, value2)
+field1 IS NOT IN (value1, value2)
+condition1 AND condition2
+condition1 OR condition2
+```
+
+### Insert
+
+```sql
+INSERT INTO table1 (field1, field2, ...) VALUES (value1, value2, ...)
+```
+
+### Delete
+
+```sql
+DELETE FROM table1 / TRUNCATE table1
+DELETE FROM table1 WHERE condition
+DELETE FROM table1, table2 FROM table1, table2 WHERE table1.id1 =
+  table2.id2 AND condition
+```
+
+### Update
+
+```sql
+UPDATE table1 SET field1=new_value1 WHERE condition
+UPDATE table1, table2 SET field1=new_value1, field2=new_value2, ... WHERE
+  table1.id1 = table2.id2 AND condition
+```
+
+### Create / Delete / Modify Table
+
+#### Create
+
+```sql
+CREATE TABLE table (field1 type1, field2 type2, ...)
+CREATE TABLE table (field1 type1, field2 type2, ..., INDEX (field))
+CREATE TABLE table (field1 type1, field2 type2, ..., PRIMARY KEY (field1))
+CREATE TABLE table (field1 type1, field2 type2, ..., PRIMARY KEY (field1,
+field2))
+```
+
+```sql
+CREATE TABLE table1 (fk_field1 type1, field2 type2, ...,
+  FOREIGN KEY (fk_field1) REFERENCES table2 (t2_fieldA))
+    [ON UPDATE|ON DELETE] [CASCADE|SET NULL]
+```
+
+```sql
+CREATE TABLE table1 (fk_field1 type1, fk_field2 type2, ...,
+ FOREIGN KEY (fk_field1, fk_field2) REFERENCES table2 (t2_fieldA, t2_fieldB))
+```
+
+```sql
+CREATE TABLE table IF NOT EXISTS (...)
+```
+
+```sql
+CREATE TEMPORARY TABLE table (...)
+```
+
+#### Drop
+
+```sql
+DROP TABLE table
+DROP TABLE IF EXISTS table
+DROP TABLE table1, table2, ...
+```
+
+#### Alter
+
+```sql
+ALTER TABLE table MODIFY field1 type1
+ALTER TABLE table MODIFY field1 type1 NOT NULL ...
+ALTER TABLE table CHANGE old_name_field1 new_name_field1 type1
+ALTER TABLE table CHANGE old_name_field1 new_name_field1 type1 NOT NULL ...
+ALTER TABLE table ALTER field1 SET DEFAULT ...
+ALTER TABLE table ALTER field1 DROP DEFAULT
+ALTER TABLE table ADD new_name_field1 type1
+ALTER TABLE table ADD new_name_field1 type1 FIRST
+ALTER TABLE table ADD new_name_field1 type1 AFTER another_field
+ALTER TABLE table DROP field1
+ALTER TABLE table ADD INDEX (field);
+```
+
+#### Change field order
+
+```sql
+ALTER TABLE table MODIFY field1 type1 FIRST
+ALTER TABLE table MODIFY field1 type1 AFTER another_field
+ALTER TABLE table CHANGE old_name_field1 new_name_field1 type1 FIRST
+ALTER TABLE table CHANGE old_name_field1 new_name_field1 type1 AFTER
+  another_field
+```
+
+### Keys
+
+```sql
+CREATE TABLE table (..., PRIMARY KEY (field1, field2))
+CREATE TABLE table (..., FOREIGN KEY (field1, field2) REFERENCES table2
+(t2_field1, t2_field2))
+```
