@@ -44,7 +44,7 @@ Documentação: <https://dev.mysql.com/doc/refman/8.0/en/>
 
 ## Acessar o MySQL do terminal
 
-**mysql - u root -p** (acessa o MySql como usuário root e solicita a senha)
+**sudo mysql - u root -p** (acessa o MySql como usuário root e solicita a senha)
 
 ## Verificar status do serviço MySQL
 
